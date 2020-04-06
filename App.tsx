@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import Card from "./src/components/Card/index.tsx";
 import Home from "./src/views/Home/index.tsx";
 import Products from "./src/views/Products/index.tsx";
+import ShopSelection from './src/views/ShopSelection/index.tsx'
+import Map from './src/views/Map/index.tsx'
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-     <Tab.Navigator initialRouteName="Home">
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Products" component={Products} options={{ title: 'Products' }} />
-     </Tab.Navigator>
+     <Stack.Navigator initialRouteName="Map">
+      <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="ShopSelection" component={ShopSelection} />
+     </Stack.Navigator>
     </NavigationContainer>
   );
 }
