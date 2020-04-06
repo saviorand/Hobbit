@@ -1,30 +1,20 @@
 import React, { useState } from "react";
-import { Button, Text, View } from "react-native";
+import Card from "./src/components/Card/index.tsx";
+import Home from "./src/views/Home/index.tsx";
+import Products from "./src/views/Products/index.tsx";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-function Cat(props) {
-  const [isHungry, setIsHungry] = useState(true);
+const Stack = createStackNavigator();
 
+export default function App() {
   return (
-    <View>
-      <Text>
-        I am {props.name}, and I am {isHungry ? "hungry" : "full"}!
-      </Text>
-      <Button
-        onPress={() => {
-          setIsHungry(false);
-        }}
-        disabled={!isHungry}
-        title={isHungry ? "Pour me some milk, please!" : "Thank you!"}
-      />
-    </View>
+    <NavigationContainer>
+     <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Products" component={Products} options={{ title: 'Products' }} />
+     </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-export default function Cafe() {
-  return (
-    <>
-      <Cat name="Munkustrap" />
-      <Cat name="Spot" />
-    </>
-  );
-}
