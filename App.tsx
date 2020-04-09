@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-     <Stack.Navigator initialRouteName="Map" headerMode="none">
+     <Stack.Navigator initialRouteName="ShopSelection" headerMode="none">
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="ShopSelection" component={ShopSelection} />
