@@ -21,6 +21,10 @@ export default function HomeScreen({ navigation }) {
         title="Go to Products"
         onPress={() => navigation.navigate('Products')}
       />
+      <Button
+        title="Specify my address"
+        onPress={() => navigation.navigate('AddressSelection')}
+      />
     </View>
      </ScrollView>
   );

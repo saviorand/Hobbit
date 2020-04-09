@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import NavButton from '../../components/NavButton/'
+import NavButton from '../../components/NavButton/';
 
 const { width, height } = Dimensions.get('window');
 
@@ -15,12 +15,12 @@ const LONGITUDE = 30.324597;
 const LATITUDE_DELTA = 0.0222;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-
 export default class Map extends Component {
 
   state = {
     location: null,
     errorMessage: null,
+    inProgress: false,
     region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -37,11 +37,18 @@ export default class Map extends Component {
       });
     } else {
       this._getLocationAsync();
+      this._reverseGeoCodeAsync();
     }}
+
+
 
 
    onRegionChange(region) {
     this.setState({ region });
+  }
+
+  onRegionChangeComplete(){
+    this._reverseGeoCodeAsync();
   }
 
    centerOnLocation(){
@@ -75,6 +82,77 @@ export default class Map extends Component {
     this.animateToCenter()
   }
 
+  resolveAfter2Seconds(result){
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(result);
+      }, 2000);
+    })
+  };
+
+  concurrentLimit(fn, n){
+    let pendingPromises = [];
+    return async function(...args){
+      while (pendingPromises.length >= n) {
+        await Promise.race(pendingPromises).catch(() => {});
+      }
+      const p = fn.apply(this, args);
+      pendingPromises.push(p);
+      await p.catch(() => {});
+      pendingPromises = pendingPromises.filter(pending => pending !== p);
+      return p;
+    };
+  }; 
+
+  _reverseGeoCodeAsync = async () => {
+   
+    let reverseLocation = await Location.reverseGeocodeAsync({
+      latitude: this.state.region.latitude,
+      longitude: this.state.region.longitude,
+    });
+    this.setState({
+      location: reverseLocation[0]['street'],
+    });
+
+  }
+
+  /*const parallelLimit = async (funcList: Array<Function>, limit = 1) => {
+  let inFlight = new Set();
+  
+  return funcList.map(async (func, i) => {
+    // Hold the loop by another loop
+    // while the next promise resolves
+    while(inFlight.size >= limit) {
+      await Promise.race(inFlight);
+    }
+    
+    console.log(`STARTING ROUND->${i} SIZE->${inFlight.size}`);
+    
+    const promise = func();
+    // Add promise to inFlight Set
+    inFlight.add(promise);
+    // Delete promise from Set when it is done
+    await promise;
+    inFlight.delete(promise);
+  });
+};
+(async () => {
+  const timeoutPromise = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+  const waitTwoSeconds = async () => await timeoutPromise(2000);
+  const promises = await parallelLimit([
+    waitTwoSeconds,
+    waitTwoSeconds,
+    waitTwoSeconds,
+    waitTwoSeconds,
+    waitTwoSeconds
+  ], 2);
+  
+  await Promise.all(promises);
+  console.log("DONE");
+})();*/
+
 
 render() {
 
@@ -86,21 +164,27 @@ render() {
           }}
           style={styles.map}
           initialRegion={this.state.region}
-          onRegionChange={region => this.onRegionChange(region)}>
+          onRegionChange={region => this.onRegionChange(region)}
+          onRegionChangeComplete={() => this.onRegionChangeComplete()}>
           <Marker coordinate={{
             latitude: this.state.region.latitude,
             longitude: this.state.region.longitude,
-          }} />
+          }}
+           />
           </MapView>
         <View style={styles.topTitle}><Text>Куда вам доставить?</Text></View>
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={styles.centeredText}>
-            {this.state.region.latitude.toPrecision(7)},
-            {this.state.region.longitude.toPrecision(7)},
+            {/*this.state.region.latitude.toPrecision(7),
+            this.state.region.longitude.toPrecision(7)},*/}
+            {this.state.location}
           </Text>
           {/*<TouchableOpacity onPress={() => this.animateToCenter()}>
           <Text>Jump to my location</Text>
           </TouchableOpacity>*/}
+        </View>
+        <View>
+        <NavButton buttonTitle={'Я вам лучше напишу'} whereTo={'AddressSelection'} />
         </View>
         <NavButton buttonTitle={'Доставьте сюда'} whereTo={'Home'}/>
         </View>
