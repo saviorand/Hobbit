@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, Button, View, StyleSheet, Text } from "react-native";
+import { Image, Button, View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import logo from '../../../assets/Lenta_logo.png';
 
@@ -8,7 +8,7 @@ export default function ShopPreview (props) {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.contentContainer}>
+    <TouchableOpacity style={styles.contentContainer} onPress={() => navigation.navigate('Home')}>
     <View style={styles.imageContainer}>
      <Image source={logo} style={{ width: 120, height: 35 }}/>
     </View>
@@ -17,7 +17,7 @@ export default function ShopPreview (props) {
      <Text style={styles.smallText}>Расстояние до магазина: {props.distanceTo}</Text>
      <Text style={styles.smallText}>Время работы: {props.workingHours}</Text>
      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
       

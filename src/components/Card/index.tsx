@@ -1,31 +1,71 @@
 import React, { useState } from "react";
-import { Button, Text, View, StyleSheet } from "react-native";
+import { Image, Button, Text, View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import milque from '../../../assets/milque.png';
 
 export default function Card(props) {
   const [isHungry, setIsHungry] = useState(true);
 
   return (
-    <View style={styles.contentContainer}>
-      <Text>
-        I am {props.text}, and I am {isHungry ? "hungry" : "full"}!
-      </Text>
-      <Button
-        onPress={() => {
-          setIsHungry(false);
-        }}
-        disabled={!isHungry}
-        title={isHungry ? "Pour me some milk, please!" : "Thank you!"}
-      />
-    </View>
+    <>
+    <TouchableOpacity style={styles.contentContainer}>
+    <View style={styles.innerWrapper}>
+     <Text style={styles.cardTitle}>{props.text}</Text>
+      <FlatList
+          data={[
+            {key: 'Молочное'},
+            {key: 'Сыр'},
+            {key: 'Яйца'},
+            {key: 'Йогурты'},
+            {key: 'Творог'},
+            {key: 'Сметана'},
+            {key: 'Сырки'},
+            {key: 'Пуддинги'},
+            {key: 'Сливочное масло'},
+            {key: 'Сгущенка'},
+          ]}
+          renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+        style={styles.cardTextContainer} />
+        </View>
+        <Image style={styles.imageContainer} source={milque}/>
+    </TouchableOpacity>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   contentContainer: {
-    height: 50,
-    marginRight: 20,
-    marginLeft: 20,
-    marginTop: 20,
-    backgroundColor: 'skyblue',
+    flex: 1,
+    flexDirection: 'row',
+    marginHorizontal: '2%',
+    marginVertical: '5.5%',
+    backgroundColor: '#fff',
+    shadowColor: 'rgba(231, 229, 229, 0.5)',
+    shadowOffset: {
+    width: -2,
+    height: -2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 26,
+    elevation: 5,
+    borderRadius: 26,
+
+  },
+  imageContainer: {
+  },
+  innerWrapper: {
+    paddingVertical: 20, 
+    paddingHorizontal: 24,
+  },
+  cardTextContainer: {
+   paddingVertical: 10,
+  },
+  cardTitle: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    width: 224,
+  },
+  item: {
+    fontSize: 16, 
+    color: '#828282',
   },
 })

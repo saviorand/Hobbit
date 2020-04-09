@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, Button, Text, View, StyleSheet } from "react-native";
+import { ScrollView, Button, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Card from "../Card/index.tsx";
 
 export default function HomeScreen({ navigation }) {
@@ -7,23 +7,17 @@ export default function HomeScreen({ navigation }) {
   return (
      <ScrollView style={styles.container}>
         <ScrollView horizontal>
-          <View style={styles.boxLarge}>
-          <Card text="Munkustrap" />
-          </View>
+          <TouchableOpacity style={styles.boxLarge} onPress={() => navigation.navigate('Products')}>
+          </TouchableOpacity>
           <View style={styles.boxLarge} />
         </ScrollView>
          <View style={styles.boxSmall}>
-          <Card text="Spot" />
          </View>        
          <View style={styles.boxSmall} />
     <View>
       <Button
         title="Go to Products"
-        onPress={() => navigation.navigate('Products')}
-      />
-      <Button
-        title="Specify my address"
-        onPress={() => navigation.navigate('AddressSelection')}
+        
       />
     </View>
      </ScrollView>
