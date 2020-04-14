@@ -8,7 +8,10 @@ export default function ShopPreview (props) {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity style={styles.contentContainer} onPress={() => navigation.navigate('Home')}>
+    <TouchableOpacity style={styles.contentContainer} onPress={() => navigation.navigate('Products', {
+      shopId: props.shopid
+    })
+  }>
     <View style={styles.imageContainer}>
      <Image source={logo} style={{ width: 120, height: 35 }}/>
     </View>

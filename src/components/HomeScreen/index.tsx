@@ -19,6 +19,7 @@ export default function HomeScreen({ navigation }) {
         title="Go to Products"
         
       />
+
     </View>
      </ScrollView>
   );
@@ -50,3 +51,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'steelblue',
   },
 })
+
