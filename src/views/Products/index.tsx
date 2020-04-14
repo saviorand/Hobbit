@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Text, FlatList, SectionList, StyleSheet, TouchableOpacity, View, Image } from "react-native";
+import { Button, Text, FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View, Image } from "react-native";
 import Constants from 'expo-constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -44,7 +44,6 @@ export default function Products({ route, navigation }) {
 
   const catArray = [];
 
-
   data.shop.categories.map(category => {
     const newItem = {};
     newItem.key = category.categoryName;
@@ -58,7 +57,7 @@ export default function Products({ route, navigation }) {
 
   console.log(catArray)
 
-    
+  // MOVE THAT TO A COMPONENT
        
   const categories = (
     
@@ -79,10 +78,12 @@ export default function Products({ route, navigation }) {
 
 
   return (
+    <SafeAreaView>
   	<View style={styles.container}>
       <ScreenTitle screenTitle={'Что возьмём?'} />
        {categories}
       </View>
+      </SafeAreaView>
   );
 }
 
