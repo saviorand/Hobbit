@@ -11,6 +11,7 @@ import ProductSelection from './src/views/ProductSelection/index';
 import Map from './src/views/Map/index';
 import AddressSelectionScreen from './src/views/AddressSearch/index';
 import ProductProfile from './src/views/ProductProfile/index';
+import Basket from './src/views/Basket/index';
 
 import { MapView, Location, Permissions } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
@@ -25,13 +26,14 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
     <NavigationContainer>
-     <Stack.Navigator initialRouteName="ProductProfile" headerMode="none">
+     <Stack.Navigator initialRouteName="ShopSelection" headerMode="none">
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="ShopSelection" component={ShopSelection} />
       <Stack.Screen name="Products" component={Products} />
       <Stack.Screen name="ProductSelection" component={ProductSelection} />
       <Stack.Screen name="ProductProfile" component={ProductProfile} />
+      <Stack.Screen name="Basket" component={Basket} />
       <Stack.Screen name="AddressSelection" component={AddressSelectionScreen} />
      </Stack.Navigator>
     </NavigationContainer>

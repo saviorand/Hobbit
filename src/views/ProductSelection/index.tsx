@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavigationContainer } from '@react-navigation/native';
-import { Button, ScrollView, View, Text, StyleSheet, Image } from 'react-native';
+import { SafeAreaView, Button, ScrollView, View, Text, StyleSheet, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { createStackNavigator } from '@react-navigation/stack';
 import { gql } from "apollo-boost";
@@ -11,66 +11,70 @@ import ProductPreview from '../../components/ProductPreview/index';
 import HorizontalSelector from '../../components/HorizontalSelector/index';
 
 const GET_PRODUCTS = gql`
-  query($id: ID!) {
-  shop(id: $id) {
+  query($productIds: [ID]!) {
+  productItems(productIds: $productIds){
     id
-    shopName
-    workingHours
-    distanceTo
-    categories {
-      id
-      categoryName
-      categoryContent {
-        id
-        categoryPreviewName
-        categoryPreviewContent {
-          id
-          productItemName
-          productPicture
-          isInStock
-          quantityInStock
-          price
-          weightIndicator
-        }
-      }
-    }
+    productItemName
+    price
+    weightIndicator
   }
 }
 `
 
-export default function ProductSelection({ navigation }) {
+export default function ProductSelection({ route, navigation }) {
 
-  //const { categoryId } = route.params;
+  const { productItems, productSections, productSectionIds, currentBigCategory } = route.params;
 
+  const [selectedSection, sectionSelect] = useState(0);
 
-  const { loading, error, data } = useQuery(GET_PRODUCTS, {
-      variables: { "id": "1" }
+  const allProducts = productItems.reduce((accumulator, currentValue) => {
+        return accumulator.concat(currentValue);
     });
 
+  const { loading, error, data } = useQuery(GET_PRODUCTS, {
+      variables: { "productIds": allProducts
+       }});
+
   if (loading) return <Text>'Loading...'</Text>;
-  if (error) return <Text>`Error! ${error.message}`</Text>;
+  if (error) return <Text style={styles.container}>`Error! ${error.message}`</Text>;
 
-  const productsArray = data.shop.categories[0].categoryContent[0].categoryPreviewContent;
 
-  const productList = productsArray.map(product => (
+  const productList = data.productItems.filter(item => productItems[selectedSection].includes(item.id))
+
+  const displayedProducts = productList.map(product => (
        
-       <ProductPreview key={product.id} productPrice={product.price} 
-       productName={product.productItemName} productWeight={product.weightIndicator} />
+      <ProductPreview key={product.id} productPrice={product.price} 
+       productName={product.productItemName} 
+       productWeight={product.weightIndicator}
+       productId={product.id} />
 
         ));
+ 
+  const sectionsForScroller: Array<Object> = [];
+  
+  for (let i = 0; i < productSectionIds.length; i++) {
+    sectionsForScroller.push({
+    categoryNames: productSections[i],
+    categoryIds: i,
+  })
+  };
 
   return (
-  	<View style={styles.container}>
-      <ScreenTitle screenTitle={'Что возьмём?'}/>
+    <SafeAreaView style={styles.container}>
+  	<View>
+      <ScreenTitle screenTitle={currentBigCategory}/>
       <View style={styles.innerWrapper}>
-      <HorizontalSelector category={'Греча'} />
+      <HorizontalSelector categories={sectionsForScroller}
+      subSect={[selectedSection, sectionSelect]} 
+       />
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.scrollFrame}>
-      {productList}
+      {displayedProducts}
       </View>
       </ScrollView>
      </View>
     </View>
+    </SafeAreaView>
   );
 }
 

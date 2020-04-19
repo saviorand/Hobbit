@@ -6,9 +6,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { gql } from "apollo-boost";
 import { useQuery } from '@apollo/react-hooks';
 import Home from '../Home/index';
-import ShopPreview from '../../components/ShopPreview/index';
+import BasketProduct from '../../components/BasketProduct/index';
 import ScreenTitle from '../../components/ScreenTitle/index';
-
+import BuyButton from '../../components/BuyButton/index';
+/*
 const GET_SHOPS = gql`
 query {
   shops {
@@ -16,33 +17,42 @@ query {
     shopName
     workingHours
     distanceTo
-    categories
   }
 }
-`
+`*/
 
+export default function Basket({ navigation }) {
 
-
-export default function ShopSelection({ navigation }) {
-
-  const { loading, error, data } = useQuery(GET_SHOPS);
+  /*const { loading, error, data } = useQuery(GET_SHOPS);
 
   if (loading) return <Text>'Loading...'</Text>;
   if (error) return <Text>`Error! ${error.message}`</Text>;
 
   const shops = data.shops.map(shop => (
-         <ShopPreview key={shop.id} categoryIds={shop.categories} 
+         <BasketProduct key={shop.id} shopid={shop.id} 
          shopTitle={shop.shopName} distanceTo={shop.distanceTo} workingHours={shop.workingHours} />
-        ))
+        ))*/
 
   return (
   	<View style={styles.container}>
-      <ScreenTitle screenTitle={'Магазины, до которых мы сможем дотянуться'}/>
+      <ScreenTitle screenTitle={'Моя корзина'}/>
       <ScrollView>
       <View style={styles.scrollFrame}>
-      {shops}
+      <BasketProduct key={1} shopid={1} 
+         productTitle={'Короткое название продукта'} 
+         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
+       <BasketProduct key={2} shopid={1} 
+         productTitle={'Короткое название продукта'} 
+         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
+         <BasketProduct key={3} shopid={1} 
+         productTitle={'Короткое название продукта'} 
+         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
+         <BasketProduct key={4} shopid={1} 
+         productTitle={'Короткое название продукта'} 
+         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
       </View>
     </ScrollView>
+    <BuyButton buttonText={'Заказать'} deliveryTime={'40 минут'} orderTotal={'1238Р'} />
     </View>
   );
 }

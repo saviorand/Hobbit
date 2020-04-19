@@ -7,24 +7,14 @@ import { gql } from "apollo-boost";
 import { useQuery } from '@apollo/react-hooks';
 
 import ScreenTitle from '../../components/ScreenTitle/index';
-import CardTitle from '../../components/CardTitle/index';
-import Card from "../../components/Card/index.tsx";
-
-import milque from '../../../assets/milque.png';
+import CategoryPreview from '../../components/CategoryPreview/index';
 
 const GET_PREVIEWS = gql`
-query($id: ID!) {
-  shop(id: $id) {
+  query($categoryIds: [ID]!) {
+  categories(categoryIds: $categoryIds){
     id
-    shopName
-    workingHours
-    distanceTo
-    categories {
-      categoryName
-      categoryContent {
-        categoryPreviewName
-      }
-    }
+    categoryName
+    categoryContent
   }
 }
 `
@@ -32,11 +22,10 @@ query($id: ID!) {
 
 export default function Products({ route, navigation }) {
 
-    const { shopId } = route.params;
-    console.log(shopId)
+    const { categoryIds } = route.params;
 
     const { loading, error, data } = useQuery(GET_PREVIEWS, {
-      variables: { "id": shopId }
+      variables: { "categoryIds": categoryIds }
     });
 
   if (loading) return <Text>'Loading...'</Text>;
@@ -44,44 +33,24 @@ export default function Products({ route, navigation }) {
 
   const catArray = [];
 
-  data.shop.categories.map(category => {
+  data.categories.map(category => {
+    
     const newItem = {};
     newItem.key = category.categoryName;
 
     const previewArray = [];
-    category.categoryContent.map(preview => previewArray.push(preview.categoryPreviewName));
+    category.categoryContent.map(preview => previewArray.push(preview));
     
     newItem.data = previewArray;
     catArray.push(newItem);
+
   });
-
-  console.log(catArray)
-
-  // MOVE THAT TO A COMPONENT
-       
-  const categories = (
-    
-    <FlatList
-          data={catArray}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => (
-          <TouchableOpacity style={styles.contentContainer}>
-         <View style={styles.innerWrapper}>
-          <CardTitle text={item.key} />
-          <Card text={item.data} key={item.data} />
-         </View>
-        <Image style={styles.imageContainer} source={milque}/>
-    </TouchableOpacity>
-          )}
-        />
-        )
-
-
+console.log(catArray)
   return (
-    <SafeAreaView>
-  	<View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+  	<View>
       <ScreenTitle screenTitle={'Что возьмём?'} />
-       {categories}
+      <CategoryPreview catArray={catArray} />
       </View>
       </SafeAreaView>
   );
@@ -90,32 +59,8 @@ export default function Products({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
   	paddingTop: Constants.statusBarHeight,
-  	flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  contentContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    marginHorizontal: '2%',
-    marginVertical: '5.5%',
-    backgroundColor: '#fff',
-    shadowColor: 'rgba(231, 229, 229, 0.5)',
-    shadowOffset: {
-    width: -2,
-    height: -2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 26,
-    elevation: 5,
-    borderRadius: 26,
-
-  },
-  imageContainer: {
-  },
-  innerWrapper: {
-    paddingVertical: 20, 
-    paddingHorizontal: 24,
   },
 })

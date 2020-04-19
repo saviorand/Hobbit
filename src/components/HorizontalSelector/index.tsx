@@ -6,19 +6,21 @@ import SmallButton from '../SmallButton/index';
 
 export default function HorizontalSelector (props) {
   
-  const [textColor, setTextColor] = useState('black');
-  const [bgColor, setBgColor] = useState('#fff');
   const navigation = useNavigation();
 
-  return (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.contentContainer}>
-     <SmallButton category={props.category} /> 
-      <SmallButton category={'Яйца'} /> 
-     <SmallButton category={'Сыр'} /> 
-     <SmallButton category={'Честь'} /> 
-     <SmallButton category={'Совесть'} /> 
-     <SmallButton category={'Компот'} /> 
 
+  const horizontalCategories = props.categories.map(category => (
+         <SmallButton category={category.categoryNames} 
+         key={category.categoryIds} section={category.categoryIds}
+         onSubSectionSelect={props.subSect} 
+         /> 
+    ))
+     
+
+  return (
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} 
+    contentContainerStyle={styles.contentContainer}>
+    {horizontalCategories}
     </ScrollView>
   );
 };

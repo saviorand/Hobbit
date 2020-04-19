@@ -4,22 +4,20 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function SmallButton (props) {
   
-  const [textColor, setTextColor] = useState('black');
-  const [bgColor, setBgColor] = useState('#fff');
+  const [subSection, setSubSection] = props.onSubSectionSelect;
+
   const navigation = useNavigation();
 
   return (
       <TouchableWithoutFeedback onPress={() => {
-        setTextColor('white'); 
-        setBgColor('#fc955f');
-        alert('Какая встреча!')
+        setSubSection(props.section)
       }} 
       >
       <View 
       style={[styles.touchableButton, {
-        backgroundColor: bgColor,
+        backgroundColor: subSection === props.section ? '#fc955f' : 'white',
       }]}><Text style={[styles.catButtonText, {
-        color: textColor,
+        color: subSection === props.section ? 'white' : 'black',
       }]}>{props.category}</Text></View>
       </TouchableWithoutFeedback>
         );

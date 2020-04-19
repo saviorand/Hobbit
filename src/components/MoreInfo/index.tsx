@@ -18,7 +18,7 @@ export default function MoreInfo (props) {
       <View style={[styles.item, {
        display: displayModeContents,
       }]}>
-       <Text style={styles.title}>{'Lorem'}</Text>
+       <Text style={styles.title}>{props.contents}</Text>
       </View>
       <Text style={styles.header} onPress={() => {
         (displayModeAbout === 'none') ? setDisplayModeAbout('flex') 
@@ -27,7 +27,7 @@ export default function MoreInfo (props) {
       <View style={[styles.item, {
        display: displayModeAbout,
       }]}>
-       <Text style={styles.title}>{'Lipsum'}</Text>
+       <Text style={styles.title}>{props.about}</Text>
       </View>
     </ScrollView>
         );

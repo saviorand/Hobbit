@@ -11,42 +11,43 @@ import BuyButton from '../../components/BuyButton/index';
 import MoreInfo from '../../components/MoreInfo/index';
 
 const GET_PRODUCT_INFO = gql`
-  query($id: ID!) {
-  shop(id: $id) {
+  query($productId: ID!) {
+  productItem(productId:$productId){
     id
-    shopName
-    workingHours
-    distanceTo
-    categories {
-      id
-      categoryName
-      categoryContent {
-        id
-        categoryPreviewName
-        categoryPreviewContent {
-          id
-          productItemName
-          productPicture
-          isInStock
-          quantityInStock
-          price
-          weightIndicator
-        }
-      }
-    }
+    productItemName
+    productPicture
+    isInStock
+    quantityInStock
+    contents
+    about
+    weightIndicator
+    price
+    related
+    complementary
   }
 }
 `
 
-export default function ProductProfile () {
+export default function ProductProfile ({ route, navigation }) {
+  
+  const { productId } = route.params;
 
+  const { loading, error, data } = useQuery(GET_PRODUCT_INFO, {
+      variables: { "productId": productId }
+    });
+
+  if (loading) return <Text>'Loading...'</Text>;
+  if (error) return <Text style={styles.container}>`Error! ${error.message}`</Text>;
+  
+  const thisProduct = data.productItem;
 
   return (
     <SafeAreaView style={styles.container}>
-     <ProductCard productTitle={'Короткое название продукта'} productWeight={'8000 гр'}
-     productPrice={'88.20 Р'} />
+     <ProductCard productTitle={thisProduct.productItemName} 
+     productWeight={thisProduct.weightIndicator}
+     productPrice={thisProduct.price} />
      <BuyButton buttonText={'Купить'} />
-     <MoreInfo />
+     <MoreInfo contents={thisProduct.contents} about={thisProduct.about} />
     </SafeAreaView>
   );
 };

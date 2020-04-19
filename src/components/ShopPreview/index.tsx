@@ -9,7 +9,7 @@ export default function ShopPreview (props) {
 
   return (
     <TouchableOpacity style={styles.contentContainer} onPress={() => navigation.navigate('Products', {
-      shopId: props.shopid
+      categoryIds: props.categoryIds
     })
   }>
     <View style={styles.imageContainer}>

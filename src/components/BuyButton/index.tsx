@@ -18,9 +18,22 @@ export default function BuyButton (props) {
        style={[styles.touchableButton, {
         backgroundColor: bgColor,
       }]}>
-       <Text style={[styles.catButtonText, {
+      <View style={styles.borderView}>
+       <Text style={[styles.deliveryTime, {
          color: textColor,
-         }]}>{props.buttonText}</Text></View>
+         }]}>{props.deliveryTime}</Text>
+       </View>
+       <View style={styles.centerView}>
+         <Text style={[styles.catButtonText, {
+         color: textColor,
+         }]}>{props.buttonText}</Text>
+        </View>
+       <View style={styles.borderView}>
+         <Text style={[styles.orderTotal, {
+         color: textColor,
+         }]}>{props.orderTotal}</Text>
+         </View>
+         </View>
        </View>
       </TouchableWithoutFeedback>
      );
@@ -32,8 +45,10 @@ const styles = StyleSheet.create({
   touchableButton: {
     borderRadius: 29,
     paddingVertical: 2,
-    paddingHorizontal: 40,
     marginHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   buttonWrapper: {
     alignItems: 'center',
@@ -44,5 +59,23 @@ const styles = StyleSheet.create({
     padding: 8,
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  deliveryTime: {
+    fontSize: 16,
+    fontWeight: '500',
+  }, 
+  orderTotal: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  borderView: {
+    width: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerView: {
+    width: '40%',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 })
