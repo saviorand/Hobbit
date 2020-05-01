@@ -26,7 +26,6 @@ export default function ProductPreview (props) {
      <Text style={styles.smallSub}>{props.productWeight}</Text>
      </View>
      <View style={styles.addTo} onPress={() => {
-
      }}>
       <AddToBasket />
       </View>

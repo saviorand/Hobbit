@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/react-hooks';
 import ProductCard from '../../components/ProductCard/index';
 import BuyButton from '../../components/BuyButton/index';
 import MoreInfo from '../../components/MoreInfo/index';
+import ErrorMessage from '../../components/ErrorMessage/index';
 
 const GET_PRODUCT_INFO = gql`
   query($productId: ID!) {
@@ -36,8 +37,8 @@ export default function ProductProfile ({ route, navigation }) {
       variables: { "productId": productId }
     });
 
-  if (loading) return <Text>'Loading...'</Text>;
-  if (error) return <Text style={styles.container}>`Error! ${error.message}`</Text>;
+  if (loading) return <ErrorMessage errorText={`Загрузка...`}/>;
+  if (error) return <ErrorMessage errorText={`Произошла ошибка! ${error.message}`}/>;
   
   const thisProduct = data.productItem;
 
@@ -46,7 +47,7 @@ export default function ProductProfile ({ route, navigation }) {
      <ProductCard productTitle={thisProduct.productItemName} 
      productWeight={thisProduct.weightIndicator}
      productPrice={thisProduct.price} />
-     <BuyButton buttonText={'Купить'} />
+     <BuyButton buttonText={'Купить'} productToBuy={thisProduct.id}/>
      <MoreInfo contents={thisProduct.contents} about={thisProduct.about} />
     </SafeAreaView>
   );

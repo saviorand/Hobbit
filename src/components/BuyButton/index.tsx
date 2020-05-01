@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Button, View, TouchableWithoutFeedback, StyleSheet, Text } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem, deleteItem } from '../../models/basket';
+
 
 export default function BuyButton (props) {
   
@@ -8,9 +11,18 @@ export default function BuyButton (props) {
   const [bgColor, setBgColor] = useState('#FC8D24');
   const navigation = useNavigation();
 
+  const items = useSelector(state => state);
+  const dispatch = useDispatch();
+  const addNewItem = (item, currentCount) => dispatch(addItem(item, currentCount));
+  
+  let itemStock = null;
+  itemStock = items.find(productItem => (productItem.item === Number(props.productToBuy)));
+
   return (
       <TouchableWithoutFeedback onPress={() => {
-        alert('Какая встреча!')
+       alert('Товар добавлен в корзину')
+       addNewItem(props.productToBuy, itemStock ? itemStock.count : 1)
+       console.log('added');
       }} 
       >
       <View style={styles.buttonWrapper} >

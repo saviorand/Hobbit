@@ -8,6 +8,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Home from '../Home/index';
 import ShopPreview from '../../components/ShopPreview/index';
 import ScreenTitle from '../../components/ScreenTitle/index';
+import ErrorMessage from '../../components/ErrorMessage/index';
 
 const GET_SHOPS = gql`
 query {
@@ -27,8 +28,8 @@ export default function ShopSelection({ navigation }) {
 
   const { loading, error, data } = useQuery(GET_SHOPS);
 
-  if (loading) return <Text>'Loading...'</Text>;
-  if (error) return <Text>`Error! ${error.message}`</Text>;
+  if (loading) return <ErrorMessage errorText={`Загрузка...`}/>;
+  if (error) return <ErrorMessage errorText={`Произошла ошибка! ${error.message}`}/>;
 
   const shops = data.shops.map(shop => (
          <ShopPreview key={shop.id} categoryIds={shop.categories} 

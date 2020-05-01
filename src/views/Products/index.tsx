@@ -45,7 +45,7 @@ export default function Products({ route, navigation }) {
     catArray.push(newItem);
 
   });
-console.log(catArray)
+
   return (
     <SafeAreaView style={styles.container}>
   	<View>

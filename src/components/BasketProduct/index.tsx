@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem, deleteItem } from '../../models/basket';
+
 import milk from '../../../assets/milk.png';
 import CirclePlus from '../PlusButton/index';
 import CircleMinus from '../MinusButton/index';
 import PhotoWrap from '../PhotoCell/index';
 
 export default function BasketProduct (props) {
+
+  const items = useSelector(state => state);
+  const dispatch = useDispatch();
+  const addNewItem = (item, currentCount) => dispatch(addItem(item, currentCount));
+  const deleteNewItem = (item, currentCount) => dispatch(deleteItem(item, currentCount));
   
-  const [Quantity, setQuantity] = useState(1);
-  const [Price, setPrice] = useState(264.60);
+  let itemStock = null;
+  itemStock = items.find(productItem => (productItem.item === Number(props.itemId)));
+
+  const [Price, setPrice] = useState(props.subPrice);
+  const [Quantity, setQuantity] = useState(itemStock ? itemStock.count : 1);
+
+  console.log(items)
+
+  /*useEffect(() => {
+    setQuantity(items.find(productItem => (productItem.item === Number(props.itemId))).count);
+  });*/
  
   return (
     <View style={styles.contentContainer} /*onPress={() => navigation.navigate('Products', {
@@ -26,16 +43,20 @@ export default function BasketProduct (props) {
      <Text style={styles.smallText}>{props.productTitle}</Text>
      <View style={styles.quantSelector}>
      <TouchableOpacity onPress={() => {
-       (Quantity > 0) ? setQuantity(Quantity - 1) : null;
-       (Price > 0) ? setPrice((parseFloat(Price) - 264.60).toPrecision(5))
+       if (Quantity > 0) {
+         setQuantity(Quantity - 1);
+         deleteNewItem(props.itemId, Quantity);
+       }  else {null};
+       (Price > 0) ? setPrice((parseFloat(Price) - props.subPrice).toPrecision(5))
        : null;
      }}>
      <CircleMinus />
      </TouchableOpacity>
      <Text style={styles.quantity}>{Quantity}</Text>
      <TouchableOpacity onPress={() => {
+       setPrice((parseFloat(Price) + props.subPrice).toPrecision(5));
        setQuantity(Quantity + 1);
-       setPrice((parseFloat(Price) + 264.60).toPrecision(5));
+       addNewItem(props.itemId, Quantity);
      }}>
      <CirclePlus />
      </TouchableOpacity>
@@ -43,7 +64,7 @@ export default function BasketProduct (props) {
     </View>
     <View style={styles.priceBlock}>
      <Text style={styles.smallTitle}>{Price + 'Р'}</Text>
-     <Text style={styles.subTitle}>{Quantity + 'x' + '264.6Р'}</Text>
+     <Text style={styles.subTitle}>{Quantity + 'x' + props.subPrice + ' P'}</Text>
     </View>
      </View>
 

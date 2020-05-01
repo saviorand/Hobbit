@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { gql } from "apollo-boost";
+import { Provider as StoreProvider } from 'react-redux';
+import store from './src/models/store';
 
 import Card from "./src/components/Card/index";
 import Home from "./src/views/Home/index";
@@ -25,8 +27,9 @@ const client = new ApolloClient({
 export default function App() {
   return (
     <ApolloProvider client={client}>
+    <StoreProvider store={store}>
     <NavigationContainer>
-     <Stack.Navigator initialRouteName="ShopSelection" headerMode="none">
+     <Stack.Navigator initialRouteName="Home" headerMode="none">
       <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="ShopSelection" component={ShopSelection} />
@@ -37,6 +40,7 @@ export default function App() {
       <Stack.Screen name="AddressSelection" component={AddressSelectionScreen} />
      </Stack.Navigator>
     </NavigationContainer>
+    </StoreProvider>
     </ApolloProvider>
   );
 }

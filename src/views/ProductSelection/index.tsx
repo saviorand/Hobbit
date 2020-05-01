@@ -9,6 +9,7 @@ import ShopPreview from '../../components/ShopPreview/index';
 import ScreenTitle from '../../components/ScreenTitle/index';
 import ProductPreview from '../../components/ProductPreview/index';
 import HorizontalSelector from '../../components/HorizontalSelector/index';
+import ErrorMessage from '../../components/ErrorMessage/index';
 
 const GET_PRODUCTS = gql`
   query($productIds: [ID]!) {
@@ -35,8 +36,8 @@ export default function ProductSelection({ route, navigation }) {
       variables: { "productIds": allProducts
        }});
 
-  if (loading) return <Text>'Loading...'</Text>;
-  if (error) return <Text style={styles.container}>`Error! ${error.message}`</Text>;
+  if (loading) return <ErrorMessage errorText={`Загрузка...`}/>;
+  if (error) return <ErrorMessage errorText={`Произошла ошибка! ${error.message}`}/>;
 
 
   const productList = data.productItems.filter(item => productItems[selectedSection].includes(item.id))

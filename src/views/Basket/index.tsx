@@ -5,54 +5,81 @@ import Constants from 'expo-constants';
 import { createStackNavigator } from '@react-navigation/stack';
 import { gql } from "apollo-boost";
 import { useQuery } from '@apollo/react-hooks';
-import Home from '../Home/index';
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem, deleteItem } from '../../models/basket';
+
 import BasketProduct from '../../components/BasketProduct/index';
 import ScreenTitle from '../../components/ScreenTitle/index';
 import BuyButton from '../../components/BuyButton/index';
-/*
-const GET_SHOPS = gql`
-query {
-  shops {
+import ErrorMessage from '../../components/ErrorMessage/index';
+
+const GET_BASKET_PRODUCTS = gql`
+  query($productIds: [ID]!) {
+  productItems(productIds: $productIds){
     id
-    shopName
-    workingHours
-    distanceTo
+    productItemName
+    price
+    weightIndicator
   }
 }
-`*/
+`
 
 export default function Basket({ navigation }) {
 
-  /*const { loading, error, data } = useQuery(GET_SHOPS);
+  const items = useSelector(state => state);
+  const dispatch = useDispatch();
+  const addNewItem = item => dispatch(addItem(item));
+  const deleteNewItem = id => dispatch(deleteItem(id));
 
-  if (loading) return <Text>'Loading...'</Text>;
-  if (error) return <Text>`Error! ${error.message}`</Text>;
+  let allProducts = [];
 
-  const shops = data.shops.map(shop => (
-         <BasketProduct key={shop.id} shopid={shop.id} 
-         shopTitle={shop.shopName} distanceTo={shop.distanceTo} workingHours={shop.workingHours} />
-        ))*/
+  if ((Object.values(items).length !== 0)) {
+  
+  allProducts = items.reduce((accumulator, currentValue) => {
+        return accumulator.concat(currentValue);
+    });
 
+  };
+
+  const { loading, error, data } = useQuery(GET_BASKET_PRODUCTS, {
+      variables: { "productIds": [allProducts.item]
+       }});
+
+  if (loading) return <ErrorMessage errorText={`Загрузка...`}/>;
+  if (error) return <ErrorMessage errorText={`Произошла ошибка! ${error.message}`}/>;
+
+  const basketProducts = [];
+
+  if ((Object.values(data.productItems).length !== 0)){ 
+    basketProducts.push(data.productItems)
+  };
+
+  let productList = [];
+
+  if ((Object.values(basketProducts)[0][0] !== null)) 
+  { 
+    productList = basketProducts.map(item => (
+       
+      <BasketProduct key={item[0].id} itemId={item[0].id} 
+         productTitle={item[0].productItemName} 
+         subPrice={item[0].price} />
+
+        ));
+   };
+  
   return (
   	<View style={styles.container}>
       <ScreenTitle screenTitle={'Моя корзина'}/>
       <ScrollView>
       <View style={styles.scrollFrame}>
-      <BasketProduct key={1} shopid={1} 
-         productTitle={'Короткое название продукта'} 
-         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
-       <BasketProduct key={2} shopid={1} 
-         productTitle={'Короткое название продукта'} 
-         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
-         <BasketProduct key={3} shopid={1} 
-         productTitle={'Короткое название продукта'} 
-         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
-         <BasketProduct key={4} shopid={1} 
-         productTitle={'Короткое название продукта'} 
-         productPrice={'264.60 Р'} subPrice={'3x88.20 Р'} />
+      {((Object.values(productList).length !== 0)) 
+        ? productList 
+        : 
+        <ErrorMessage errorText={'Похоже, вы ещё ничего не взяли. Положите сюда что-нибудь'}/>}
       </View>
     </ScrollView>
-    <BuyButton buttonText={'Заказать'} deliveryTime={'40 минут'} orderTotal={'1238Р'} />
+    <BuyButton buttonText={'Заказать'} 
+    deliveryTime={'40 минут'} orderTotal={'1238Р'} />
     </View>
   );
 }
@@ -69,5 +96,5 @@ const styles = StyleSheet.create({
   	flex: 1,
   	width: 350,
   	paddingBottom: 25,
-  }
+  },
 })
