@@ -31,18 +31,21 @@ export default function Basket({ navigation }) {
   const addNewItem = item => dispatch(addItem(item));
   const deleteNewItem = id => dispatch(deleteItem(id));
 
-  let allProducts = [];
+  let allProductsUnique = [];
 
   if ((Object.values(items).length !== 0)) {
   
-  allProducts = items.reduce((accumulator, currentValue) => {
-        return accumulator.concat(currentValue);
+  allProductsUnique = items.map(item => {
+        return item.item
+    }).filter((value, index, self) => {
+      return self.indexOf(value) === index;
     });
 
   };
 
+
   const { loading, error, data } = useQuery(GET_BASKET_PRODUCTS, {
-      variables: { "productIds": [allProducts.item]
+      variables: { "productIds": allProductsUnique
        }});
 
   if (loading) return <ErrorMessage errorText={`Загрузка...`}/>;
@@ -50,36 +53,41 @@ export default function Basket({ navigation }) {
 
   const basketProducts = [];
 
+
   if ((Object.values(data.productItems).length !== 0)){ 
     basketProducts.push(data.productItems)
   };
 
-  let productList = [];
+ let productList = []; 
 
-  if ((Object.values(basketProducts)[0][0] !== null)) 
-  { 
-    productList = basketProducts.map(item => (
+  console.log(items)
+
+ if (basketProducts[0] !== undefined) {
+  productList = basketProducts[0].map(item => (
        
-      <BasketProduct key={item[0].id} itemId={item[0].id} 
-         productTitle={item[0].productItemName} 
-         subPrice={item[0].price} />
+      <BasketProduct key={item.id} itemId={item.id} 
+         productTitle={item.productItemName} 
+         subPrice={item.price} 
+         itemStock={items.filter(product => product.item === item.id).length} />
 
         ));
-   };
+   }
   
   return (
   	<View style={styles.container}>
       <ScreenTitle screenTitle={'Моя корзина'}/>
       <ScrollView>
       <View style={styles.scrollFrame}>
-      {((Object.values(productList).length !== 0)) 
+      {(productList.length !== 0) 
         ? productList 
         : 
         <ErrorMessage errorText={'Похоже, вы ещё ничего не взяли. Положите сюда что-нибудь'}/>}
       </View>
     </ScrollView>
     <BuyButton buttonText={'Заказать'} 
-    deliveryTime={'40 минут'} orderTotal={'1238Р'} />
+    deliveryTime={'40 минут'} orderTotal={basketProducts[0].reduce((accumulator, currentItem) => {
+      return accumulator.price + currentItem.price;
+    })} />
     </View>
   );
 }

@@ -15,18 +15,18 @@ export default function BasketProduct (props) {
   const addNewItem = (item, currentCount) => dispatch(addItem(item, currentCount));
   const deleteNewItem = (item, currentCount) => dispatch(deleteItem(item, currentCount));
   
-  let itemStock = null;
-  itemStock = items.find(productItem => (productItem.item === Number(props.itemId)));
-
-  const [Price, setPrice] = useState(props.subPrice);
-  const [Quantity, setQuantity] = useState(itemStock ? itemStock.count : 1);
-
-  console.log(items)
-
-  /*useEffect(() => {
-    setQuantity(items.find(productItem => (productItem.item === Number(props.itemId))).count);
-  });*/
+  const [Quantity, setQuantity] = useState(props.itemStock);
  
+  useEffect(() => {
+    setQuantity(props.itemStock);
+  });
+
+  const [Price, setPrice] = useState(props.subPrice * Quantity);
+  
+  useEffect(() => {
+    setPrice(props.subPrice * Quantity);
+  })
+
   return (
     <View style={styles.contentContainer} /*onPress={() => navigation.navigate('Products', {
       shopId: props.shopid
@@ -44,19 +44,14 @@ export default function BasketProduct (props) {
      <View style={styles.quantSelector}>
      <TouchableOpacity onPress={() => {
        if (Quantity > 0) {
-         setQuantity(Quantity - 1);
-         deleteNewItem(props.itemId, Quantity);
+         deleteNewItem(props.itemId);
        }  else {null};
-       (Price > 0) ? setPrice((parseFloat(Price) - props.subPrice).toPrecision(5))
-       : null;
      }}>
      <CircleMinus />
      </TouchableOpacity>
      <Text style={styles.quantity}>{Quantity}</Text>
      <TouchableOpacity onPress={() => {
-       setPrice((parseFloat(Price) + props.subPrice).toPrecision(5));
-       setQuantity(Quantity + 1);
-       addNewItem(props.itemId, Quantity);
+       addNewItem(props.itemId);
      }}>
      <CirclePlus />
      </TouchableOpacity>

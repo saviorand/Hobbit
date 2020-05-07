@@ -14,15 +14,11 @@ export default function BuyButton (props) {
   const items = useSelector(state => state);
   const dispatch = useDispatch();
   const addNewItem = (item, currentCount) => dispatch(addItem(item, currentCount));
-  
-  let itemStock = null;
-  itemStock = items.find(productItem => (productItem.item === Number(props.productToBuy)));
+
 
   return (
       <TouchableWithoutFeedback onPress={() => {
-       alert('Товар добавлен в корзину')
-       addNewItem(props.productToBuy, itemStock ? itemStock.count : 1)
-       console.log('added');
+       addNewItem(props.productToBuy, 1)
       }} 
       >
       <View style={styles.buttonWrapper} >

@@ -7,18 +7,16 @@ export const DELETE_BASKET_ITEM = 'DELETE_BASKET_ITEM';
 
 // Action creator
 
-export function addItem(item, currentCount) {
+export function addItem(item) {
    return {
    	type: ADD_BASKET_ITEM,
-   	count: currentCount++,
    	item
    }
 };
 
-export function deleteItem(item, currentCount) {
+export function deleteItem(item) {
 	return {
 		type: DELETE_BASKET_ITEM,
-		count: currentCount--,
 		item
 	}
 };
@@ -29,24 +27,26 @@ const initialState:Array<Object> = [];
 
 function itemsReducer(state = initialState, action) {
 	switch (action.type) {
-		case ADD_BASKET_ITEM:
+		case "ADD_BASKET_ITEM":
 			return [
+			...state,
 			{
-				count: action.count,
-				item: action.item
-			}
-		];
+				item: action.item,
 
-		case DELETE_BASKET_ITEM:
-		return [
-			{
-				count: action.count,
-				item: action.item
 			}
-		];
+			];
+			break;
+
+		case "DELETE_BASKET_ITEM":
+            return [
+            ...state.slice(0, state.findIndex(item => {return item.item === action.item})), 
+            ...state.slice(state.findIndex(item => {return item.item === action.item}) + 1, state.length)
+            ]
+		     break;
 		
 		default:
 			return state;
+			break;
 	}
 }
 
