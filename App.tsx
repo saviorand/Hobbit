@@ -23,6 +23,7 @@ const Stack = createStackNavigator();
 const client = new ApolloClient({
 	uri: 'http://192.168.0.122:4000/graphql',
 });
+//<Stack.Screen name="Map" component={Map} />
 
 export default function App() {
   return (
@@ -30,7 +31,6 @@ export default function App() {
     <StoreProvider store={store}>
     <NavigationContainer>
      <Stack.Navigator initialRouteName="Home" headerMode="none">
-      <Stack.Screen name="Map" component={Map} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="ShopSelection" component={ShopSelection} />
       <Stack.Screen name="Products" component={Products} />
