@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import { Platform, Text, View, StyleSheet, Dimensions, TouchableOpacity, Button } from 'react-native';
 import MapView, { MAP_TYPES, Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
@@ -151,7 +151,7 @@ export default class Map extends Component {
   
   await Promise.all(promises);
   console.log("DONE");
-})();*/
+})();
 
 
 render() {
@@ -174,14 +174,16 @@ render() {
           </MapView>
         <View style={styles.topTitle}><Text>Куда вам доставить?</Text></View>
         <View style={[styles.bubble, styles.latlng]}>
-          <Text style={styles.centeredText}>
+          <Text style={styles.centeredText}>*/
             {/*this.state.region.latitude.toPrecision(7),
             this.state.region.longitude.toPrecision(7)},*/}
-            {this.state.location}
+            /*{this.state.location}
           </Text>
-          {/*<TouchableOpacity onPress={() => this.animateToCenter()}>
+          
+          /*{<TouchableOpacity onPress={() => this.animateToCenter()}>
           <Text>Jump to my location</Text>
-          </TouchableOpacity>*/}
+          </TouchableOpacity>}*/
+          /*
         </View>
         <View>
         <NavButton buttonTitle={'Я вам лучше напишу'} whereTo={'AddressSelection'} />
@@ -226,3 +228,4 @@ const styles = StyleSheet.create({
   centeredText: { textAlign: 'center' },
 });
 
+*/

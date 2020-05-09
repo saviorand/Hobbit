@@ -22,16 +22,16 @@ export default function BasketProduct (props) {
   });
 
   const [Price, setPrice] = useState(props.subPrice * Quantity);
-  
+
   useEffect(() => {
     setPrice(props.subPrice * Quantity);
-  })
+    //setTotal(current => current + props.subPrice);
+  //}, [Quantity]);
+  //console.log(Total)
+})
 
   return (
-    <View style={styles.contentContainer} /*onPress={() => navigation.navigate('Products', {
-      shopId: props.shopid
-    })
-  }*/>
+    <View style={styles.contentContainer}>
     <View style={styles.innerWrapper}>
     <View style={styles.imageWrapper}>
     <View style={styles.cellContainer}>

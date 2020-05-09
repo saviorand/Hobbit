@@ -12,6 +12,7 @@ import BasketProduct from '../../components/BasketProduct/index';
 import ScreenTitle from '../../components/ScreenTitle/index';
 import BuyButton from '../../components/BuyButton/index';
 import ErrorMessage from '../../components/ErrorMessage/index';
+import CheckOutButton from '../../components/CheckOutButton/index';
 
 const GET_BASKET_PRODUCTS = gql`
   query($productIds: [ID]!) {
@@ -30,6 +31,8 @@ export default function Basket({ navigation }) {
   const dispatch = useDispatch();
   const addNewItem = item => dispatch(addItem(item));
   const deleteNewItem = id => dispatch(deleteItem(id));
+
+  const [Total, setTotal] = useState(0);
 
   let allProductsUnique = [];
 
@@ -59,8 +62,7 @@ export default function Basket({ navigation }) {
   };
 
  let productList = []; 
-
-  console.log(items)
+ let buyButton = null;
 
  if (basketProducts[0] !== undefined) {
   productList = basketProducts[0].map(item => (
@@ -71,6 +73,15 @@ export default function Basket({ navigation }) {
          itemStock={items.filter(product => product.item === item.id).length} />
 
         ));
+  
+  let currentTotal = basketProducts[0].reduce((accumulator, currentValue) => {
+    return accumulator
+     + currentValue.price*items.filter(product => product.item === currentValue.id).length;
+  }, 0);
+
+   buyButton = (<CheckOutButton buttonText={'Заказать'} 
+    deliveryTime={'40 минут'} orderTotal={currentTotal} />);
+
    }
   
   return (
@@ -84,10 +95,7 @@ export default function Basket({ navigation }) {
         <ErrorMessage errorText={'Похоже, вы ещё ничего не взяли. Положите сюда что-нибудь'}/>}
       </View>
     </ScrollView>
-    <BuyButton buttonText={'Заказать'} 
-    deliveryTime={'40 минут'} orderTotal={basketProducts[0].reduce((accumulator, currentItem) => {
-      return accumulator.price + currentItem.price;
-    })} />
+    {(buyButton) ? buyButton : null}
     </View>
   );
 }
