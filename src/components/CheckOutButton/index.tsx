@@ -18,7 +18,7 @@ export default function CheckOutButton (props) {
 
   return (
       <TouchableWithoutFeedback onPress={() => {
-       alert('product machine broke.' + props.orderTotal)
+       alert('Сумма вашего заказа: ' + props.orderTotal)
       }} 
       >
       <View style={styles.buttonWrapper} >
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 29,
     paddingVertical: 2,
     marginHorizontal: 8,
+    minWidth: 300,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -71,10 +72,14 @@ const styles = StyleSheet.create({
   deliveryTime: {
     fontSize: 16,
     fontWeight: '500',
+    marginLeft: 5,
   }, 
   orderTotal: {
     fontSize: 16,
     fontWeight: '700',
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   borderView: {
     width: '25%',

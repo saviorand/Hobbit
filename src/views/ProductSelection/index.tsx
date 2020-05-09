@@ -10,6 +10,7 @@ import ScreenTitle from '../../components/ScreenTitle/index';
 import ProductPreview from '../../components/ProductPreview/index';
 import HorizontalSelector from '../../components/HorizontalSelector/index';
 import ErrorMessage from '../../components/ErrorMessage/index';
+import BackButton from '../../components/BackButton/index';
 
 const GET_PRODUCTS = gql`
   query($productIds: [ID]!) {
@@ -63,7 +64,7 @@ export default function ProductSelection({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
   	<View>
-      <ScreenTitle screenTitle={currentBigCategory}/>
+      <ScreenTitle screenTitle={currentBigCategory} leftButton={<BackButton onPress={navigation.goBack} />} />
       <View style={styles.innerWrapper}>
       <HorizontalSelector categories={sectionsForScroller}
       subSect={[selectedSection, sectionSelect]} 
@@ -82,7 +83,6 @@ export default function ProductSelection({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-  	paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff',
   },
   innerWrapper: {

@@ -6,7 +6,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { gql } from "apollo-boost";
 import { useQuery } from '@apollo/react-hooks';
 
-import ScreenTitle from '../../components/ScreenTitle/index';
 import CategoryPreview from '../../components/CategoryPreview/index';
 
 const GET_PREVIEWS = gql`
@@ -49,7 +48,6 @@ export default function Products({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
   	<View>
-      <ScreenTitle screenTitle={'Что возьмём?'} />
       <CategoryPreview catArray={catArray} />
       </View>
       </SafeAreaView>

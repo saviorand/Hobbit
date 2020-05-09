@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import { Image, Text } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
@@ -58,4 +58,4 @@ export default function GooglePlacesInput () {
       debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
     />
   );
-}
+}*/

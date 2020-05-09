@@ -10,6 +10,8 @@ import ProductCard from '../../components/ProductCard/index';
 import BuyButton from '../../components/BuyButton/index';
 import MoreInfo from '../../components/MoreInfo/index';
 import ErrorMessage from '../../components/ErrorMessage/index';
+import ScreenTitle from '../../components/ScreenTitle/index';
+import BackButton from '../../components/BackButton/index';
 
 const GET_PRODUCT_INFO = gql`
   query($productId: ID!) {
@@ -44,6 +46,7 @@ export default function ProductProfile ({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+     <ScreenTitle screenTitle={thisProduct.productItemName} leftButton={<BackButton onPress={navigation.goBack} />} />
      <ProductCard productTitle={thisProduct.productItemName} 
      productWeight={thisProduct.weightIndicator}
      productPrice={thisProduct.price} />
@@ -56,7 +59,6 @@ export default function ProductProfile ({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#fff'
   },
 })

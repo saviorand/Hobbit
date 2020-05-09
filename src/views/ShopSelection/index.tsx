@@ -7,7 +7,6 @@ import { gql } from "apollo-boost";
 import { useQuery } from '@apollo/react-hooks';
 import Home from '../Home/index';
 import ShopPreview from '../../components/ShopPreview/index';
-import ScreenTitle from '../../components/ScreenTitle/index';
 import ErrorMessage from '../../components/ErrorMessage/index';
 
 const GET_SHOPS = gql`
@@ -38,7 +37,6 @@ export default function ShopSelection({ navigation }) {
 
   return (
   	<View style={styles.container}>
-      <ScreenTitle screenTitle={'Магазины, до которых мы сможем дотянуться'}/>
       <ScrollView>
       <View style={styles.scrollFrame}>
       {shops}

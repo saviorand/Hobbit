@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addItem, deleteItem } from '../../models/basket';
 
 import BasketProduct from '../../components/BasketProduct/index';
-import ScreenTitle from '../../components/ScreenTitle/index';
 import BuyButton from '../../components/BuyButton/index';
 import ErrorMessage from '../../components/ErrorMessage/index';
 import CheckOutButton from '../../components/CheckOutButton/index';
@@ -80,13 +79,12 @@ export default function Basket({ navigation }) {
   }, 0);
 
    buyButton = (<CheckOutButton buttonText={'Заказать'} 
-    deliveryTime={'40 минут'} orderTotal={currentTotal} />);
+    deliveryTime={'40 минут'} orderTotal={+(currentTotal.toFixed(2))} />);
 
    }
   
   return (
   	<View style={styles.container}>
-      <ScreenTitle screenTitle={'Моя корзина'}/>
       <ScrollView>
       <View style={styles.scrollFrame}>
       {(productList.length !== 0) 

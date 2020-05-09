@@ -18,7 +18,8 @@ export default function BuyButton (props) {
 
   return (
       <TouchableWithoutFeedback onPress={() => {
-       addNewItem(props.productToBuy, 1)
+       addNewItem(props.productToBuy, 1);
+       alert('Мы добавили этот продукт в вашу корзину');
       }} 
       >
       <View style={styles.buttonWrapper} >

@@ -12,7 +12,7 @@ import Svg, {
 function BasketButton(props) {
   return (
     <Svg width={68} height={70} viewBox="0 0 56 59" fill="none" {...props}>
-      <G filter="url(#prefix__filter0_dddi)">
+      <G >
         <Circle
           cx={29}
           cy={28.326}

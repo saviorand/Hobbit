@@ -21,10 +21,10 @@ export default function BasketProduct (props) {
     setQuantity(props.itemStock);
   });
 
-  const [Price, setPrice] = useState(props.subPrice * Quantity);
+  const [Price, setPrice] = useState(+((props.subPrice * Quantity).toFixed(2)));
 
   useEffect(() => {
-    setPrice(props.subPrice * Quantity);
+    setPrice(+((props.subPrice * Quantity).toFixed(2)));
     //setTotal(current => current + props.subPrice);
   //}, [Quantity]);
   //console.log(Total)
