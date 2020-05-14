@@ -18,7 +18,10 @@ export default function CheckOutButton (props) {
 
   return (
       <TouchableWithoutFeedback onPress={() => {
-       alert('Сумма вашего заказа: ' + props.orderTotal)
+        navigation.navigate('Оплата заказа', {
+          orderSum: props.orderTotal,
+          orderContent: props.orderContents,
+        })
       }} 
       >
       <View style={styles.buttonWrapper} >

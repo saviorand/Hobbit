@@ -45,7 +45,6 @@ export default function Basket({ navigation }) {
 
   };
 
-
   const { loading, error, data } = useQuery(GET_BASKET_PRODUCTS, {
       variables: { "productIds": allProductsUnique
        }});
@@ -78,8 +77,21 @@ export default function Basket({ navigation }) {
      + currentValue.price*items.filter(product => product.item === currentValue.id).length;
   }, 0);
 
+  let invoiceList = basketProducts[0].map(item => {
+    return {
+      description: item.productItemName,
+      quantity: items.filter(product => product.item === item.id).length.toFixed(2),
+      amount: {value: item.price.toFixed(2), currency: 'RUB'},
+      vat_code: 2,
+      payment_mode: 'full_prepayment',
+      payment_subject: 'commodity',
+
+    };
+  });
+
    buyButton = (<CheckOutButton buttonText={'Заказать'} 
-    deliveryTime={'40 минут'} orderTotal={+(currentTotal.toFixed(2))} />);
+    deliveryTime={'40 минут'} orderTotal={+(currentTotal.toFixed(2))} 
+    orderContents={invoiceList} />);
 
    }
   

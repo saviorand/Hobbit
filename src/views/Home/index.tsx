@@ -13,6 +13,7 @@ import ProductSelection from '../ProductSelection/index';
 //import Map from '../Map/index';
 import AddressSelectionScreen from '../AddressSearch/index';
 import ProductProfile from '../ProductProfile/index';
+import PaymentWV from '../PaymentWV/index';
 //import Basket from '../Basket/index';
 
 import FocusedTint from "../../components/FocusedButtonTint/index";
@@ -34,7 +35,7 @@ export default function Home() {
       ? options.headerTitle
       : options.title !== undefined
       ? options.title
-      : (scene.route.name !== 'ProductSelection') && (scene.route.name !== 'ProductProfile')
+      : (scene.route.name !== 'ProductSelection') && (scene.route.name !== 'ProductProfile') && (scene.route.name !== 'Оплата заказа')
       ? scene.route.name : null;
 
       if (title !== null) {
@@ -58,6 +59,7 @@ headerStyle: {
       <Stack.Screen name="ProductProfile" component={ProductProfile} />
       <Stack.Screen name="Basket" component={Basket} />
       <Stack.Screen name="AddressSelection" component={AddressSelectionScreen} />
+      <Stack.Screen name="Оплата заказа" component={PaymentWV} />
      </Stack.Navigator>
    
   );
