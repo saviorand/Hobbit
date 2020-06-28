@@ -1,30 +1,46 @@
 import React, { useState } from "react";
-import { Button, View, StyleSheet } from "react-native";
+import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearBasket } from '../../models/basket';
 
 export default function NavButton (props) {
+  const items = useSelector(state => state);
+  const dispatch = useDispatch();
+  const clearUp = () => dispatch(clearBasket());
 
   const navigation = useNavigation();
 
+
   return (
-    <View style={styles.contentContainer}>
-     <Button
-        title={props.buttonTitle}
-        onPress={() => navigation.navigate(props.whereTo)}
-      />
-    </View>
+     <TouchableWithoutFeedback onPress={() => {
+       clearUp();
+       navigation.navigate(props.whereTo)
+     }}>
+     <View style={styles.touchableButton}>
+     <Text style={styles.navButtonText}>{props.buttonTitle}</Text>
+     </View>
+     </TouchableWithoutFeedback>
   );
 };
       
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    height: 50,
-    marginRight: 20,
-    marginLeft: 20,
-    marginTop: 20,
+  touchableButton: { 
+    borderRadius: 29,
+    paddingVertical: 2,
+    marginHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#FC8D24',
+    minWidth: 300,
+
   },
+  navButtonText: {
+    padding: 8,
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#fff'
+  }
 })

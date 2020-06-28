@@ -17,6 +17,9 @@ const GET_PRODUCTS = gql`
   productItems(productIds: $productIds){
     id
     productItemName
+    productPicture
+    isInStock
+    quantityInStock
     price
     weightIndicator
   }
@@ -47,6 +50,9 @@ export default function ProductSelection({ route, navigation }) {
        
       <ProductPreview key={product.id} productPrice={product.price} 
        productName={product.productItemName} 
+       productPicture={product.productPicture}
+       isInStock={product.isInStock}
+       quantityInStock={product.quantityInStock}
        productWeight={product.weightIndicator}
        productId={product.id} />
 

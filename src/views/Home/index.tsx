@@ -14,6 +14,9 @@ import ProductSelection from '../ProductSelection/index';
 import AddressSelectionScreen from '../AddressSearch/index';
 import ProductProfile from '../ProductProfile/index';
 import PaymentWV from '../PaymentWV/index';
+import TermsView from '../TermsView/index';
+import ThankYou from '../ThankYou/index';
+import ClarifyDetails from '../ClarifyDetails/index';
 //import Basket from '../Basket/index';
 
 import FocusedTint from "../../components/FocusedButtonTint/index";
@@ -28,14 +31,17 @@ const Stack = createStackNavigator();
 
 export default function Home() {
   return (
-  <Stack.Navigator initialRouteName="ShopSelection" screenOptions={{header: ({ scene, previous, navigation }) => {
+  <Stack.Navigator initialRouteName="shop-selection" screenOptions={{header: ({ scene, previous, navigation }) => {
   const { options } = scene.descriptor;
   const title =
     options.headerTitle !== undefined
       ? options.headerTitle
       : options.title !== undefined
       ? options.title
-      : (scene.route.name !== 'ProductSelection') && (scene.route.name !== 'ProductProfile') && (scene.route.name !== 'Оплата заказа')
+      : scene.route.name === 'details'
+      ? ''
+      : (scene.route.name !== 'product-selection') && (scene.route.name !== 'product-profile') && (scene.route.name !== 'payment')
+      && (scene.route.name !== 'thank-you') && (scene.route.name !== 'terms-view') 
       ? scene.route.name : null;
 
       if (title !== null) {
@@ -53,13 +59,16 @@ export default function Home() {
 headerStyle: {
   height: 80, // Specify the height of your custom header
 }}} headerMode="screen">
-      <Stack.Screen name="Магазины, до которых мы сможем дотянуться" component={ShopSelection} />
-      <Stack.Screen name="Отделы" component={Products} />
-      <Stack.Screen name="ProductSelection" component={ProductSelection} />
-      <Stack.Screen name="ProductProfile" component={ProductProfile} />
-      <Stack.Screen name="Basket" component={Basket} />
-      <Stack.Screen name="AddressSelection" component={AddressSelectionScreen} />
-      <Stack.Screen name="Оплата заказа" component={PaymentWV} />
+      <Stack.Screen name="shop-selection" component={ShopSelection} />
+      <Stack.Screen name="product-categories" component={Products} />
+      <Stack.Screen name="product-selection" component={ProductSelection} />
+      <Stack.Screen name="product-profile" component={ProductProfile} />
+      <Stack.Screen name="basket" component={Basket} />
+      <Stack.Screen name="address-selection" component={AddressSelectionScreen} />
+      <Stack.Screen name="payment" component={PaymentWV} />
+      <Stack.Screen name="thank-you" component={ThankYou} />
+      <Stack.Screen name="details" component={ClarifyDetails} />
+      <Stack.Screen name="terms-view" component={TermsView} />
      </Stack.Navigator>
    
   );

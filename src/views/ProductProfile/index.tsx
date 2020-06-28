@@ -14,8 +14,8 @@ import ScreenTitle from '../../components/ScreenTitle/index';
 import BackButton from '../../components/BackButton/index';
 
 const GET_PRODUCT_INFO = gql`
-  query($productId: ID!) {
-  productItem(productId:$productId){
+  query($productIds: [ID]!) {
+  productItems(productIds:$productIds){
     id
     productItemName
     productPicture
@@ -25,8 +25,6 @@ const GET_PRODUCT_INFO = gql`
     about
     weightIndicator
     price
-    related
-    complementary
   }
 }
 `
@@ -36,22 +34,23 @@ export default function ProductProfile ({ route, navigation }) {
   const { productId } = route.params;
 
   const { loading, error, data } = useQuery(GET_PRODUCT_INFO, {
-      variables: { "productId": productId }
+      variables: { "productIds": Array.from(productId) }
     });
 
   if (loading) return <ErrorMessage errorText={`Загрузка...`}/>;
   if (error) return <ErrorMessage errorText={`Произошла ошибка! ${error.message}`}/>;
   
-  const thisProduct = data.productItem;
-
+  const thisProduct = data.productItems[0];
   return (
     <SafeAreaView style={styles.container}>
      <ScreenTitle screenTitle={thisProduct.productItemName} leftButton={<BackButton onPress={navigation.goBack} />} />
+     <ScrollView>
      <ProductCard productTitle={thisProduct.productItemName} 
-     productWeight={thisProduct.weightIndicator}
+     productPicture={thisProduct.productPicture} productWeight={thisProduct.weightIndicator}
      productPrice={thisProduct.price} />
      <BuyButton buttonText={'Купить'} productToBuy={thisProduct.id}/>
      <MoreInfo contents={thisProduct.contents} about={thisProduct.about} />
+     </ScrollView>
     </SafeAreaView>
   );
 };
@@ -59,6 +58,7 @@ export default function ProductProfile ({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    flex: 1
   },
 })

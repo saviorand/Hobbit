@@ -8,7 +8,7 @@ export default function ProductCard (props) {
   return (
     <View style={styles.contentContainer}>
      <View style={styles.imageContainer}>
-      <Image source={logo} style={{ width: 300, height: 300 }}/>
+      <Image source={props.productPicture} style={{ width: 300, height: 300 }}/>
      </View>
      <Text style={styles.smallTitle}>{props.productTitle}</Text>
      <View style={styles.textBlock}>

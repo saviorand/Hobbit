@@ -10,8 +10,8 @@ import Card from "../../components/Card/index";
 import milque from '../../../assets/milque.png';
 
 const GET_PREVIEW_TEXT = gql`
-  query($contentIds: [ID]!) {
-  categoryContents(contentIds: $contentIds){
+  query($categoryPreviewIds: [ID]!) {
+  categoryPreviews(categoryPreviewIds: $categoryPreviewIds){
     id
     categoryPreviewName
     categoryPreviewContent
@@ -25,13 +25,12 @@ export default function CategoryPreview (props) {
 
   const previewIds = [];
   props.catArray.map(item => previewIds.push(item.data))
-
+  
   const previewContents = previewIds.reduce((accumulator, currentValue) => {
     return accumulator.concat(currentValue)
   });
-
    const { loading, error, data } = useQuery(GET_PREVIEW_TEXT, {
-      variables: { "contentIds": previewContents }
+      variables: { "categoryPreviewIds": previewContents }
     });
 
 
@@ -43,7 +42,7 @@ export default function CategoryPreview (props) {
   previewsWithTitles.map(item => {
     for (let i = 0; i < item.data.length; i++){
       (previewContents.includes(item.data[i])) 
-      ? (item.data[i] = data.categoryContents.find(content => (content.id === item.data[i])))
+      ? (item.data[i] = data.categoryPreviews.find(content => (content.id === item.data[i])))
       : null
     }
   })
@@ -55,12 +54,14 @@ export default function CategoryPreview (props) {
           keyExtractor={(item, index) => item + index}
           renderItem={({ item }) => (
           <TouchableOpacity style={styles.contentContainer} 
-          onPress={() => navigation.navigate('ProductSelection', {
+          onPress={() => navigation.navigate('Home', {
+            screen: 'product-selection', 
+            params: {
             productItems: item.data.map(preview => preview.categoryPreviewContent),
             productSections: item.data.map(preview => preview.categoryPreviewName),
             productSectionIds: item.data.map(preview => preview.id),
             currentBigCategory: item.key,
-          })}>
+          }})}>
          <View style={styles.innerWrapper}>
           <CardTitle text={item.key} />
           <Card text={item.data.map(preview => preview.categoryPreviewName )} 

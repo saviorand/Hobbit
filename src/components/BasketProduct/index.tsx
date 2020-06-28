@@ -37,7 +37,7 @@ export default function BasketProduct (props) {
     <View style={styles.cellContainer}>
     <PhotoWrap />
     </View>
-    <Image source={milk} style={{ width: 25, height: 65, }}/>
+    <Image source={props.productPicture} style={styles.productImage}/>
     </View>
     <View style={styles.textBlock}>
      <Text style={styles.smallText}>{props.productTitle}</Text>
@@ -102,6 +102,11 @@ const styles = StyleSheet.create({
     width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  productImage: {
+   width: 81,
+   height: 79,
+   borderRadius: 20,
   },
   textBlock: {
     justifyContent: 'center',

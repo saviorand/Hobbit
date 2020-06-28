@@ -35,6 +35,7 @@ export default function ShopSelection({ navigation }) {
          shopTitle={shop.shopName} distanceTo={shop.distanceTo} workingHours={shop.workingHours} />
         ))
 
+  
   return (
   	<View style={styles.container}>
       <ScrollView>

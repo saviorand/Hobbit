@@ -3,6 +3,7 @@ import { Button, View, Text, StyleSheet } from 'react-native';
 import PaymentView from '../../components/PaymentView/index';
 import { decode as atob, encode as btoa } from 'base-64';
 import * as Random from 'expo-random';
+import { Linking } from "expo";
 
 import ErrorMessage from '../../components/ErrorMessage/index';
 // Use when it's fixed in expo: import 'react-native-get-random-values';
@@ -45,7 +46,7 @@ export default function PaymentWV({ route, navigation }) {
         "capture": true,
         "confirmation": {
           "type": "redirect",
-          "return_url": "exp://192.168.0.122:19000"
+          "return_url": Linking.makeUrl('/home/thankyou/123')
         },
         "description": "Заказ №" + orderCount,
         "receipt": {

@@ -18,6 +18,9 @@ const GET_BASKET_PRODUCTS = gql`
   productItems(productIds: $productIds){
     id
     productItemName
+    productPicture
+    isInStock
+    quantityInStock
     price
     weightIndicator
   }
@@ -68,6 +71,7 @@ export default function Basket({ navigation }) {
       <BasketProduct key={item.id} itemId={item.id} 
          productTitle={item.productItemName} 
          subPrice={item.price} 
+         productPicture={item.productPicture}
          itemStock={items.filter(product => product.item === item.id).length} />
 
         ));
@@ -88,6 +92,7 @@ export default function Basket({ navigation }) {
 
     };
   });
+  console.log(basketProducts[0])
 
    buyButton = (<CheckOutButton buttonText={'Заказать'} 
     deliveryTime={'40 минут'} orderTotal={+(currentTotal.toFixed(2))} 

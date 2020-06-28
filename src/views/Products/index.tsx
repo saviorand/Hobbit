@@ -26,11 +26,11 @@ export default function Products({ route, navigation }) {
     const { loading, error, data } = useQuery(GET_PREVIEWS, {
       variables: { "categoryIds": categoryIds }
     });
-
   if (loading) return <Text>'Loading...'</Text>;
-  if (error) return <Text>`Error! ${error.message}`</Text>;
+  if (error) return <Text>`Error! ${error.message}` </Text>;
 
   const catArray = [];
+
 
   data.categories.map(category => {
     

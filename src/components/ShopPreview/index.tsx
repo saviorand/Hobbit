@@ -8,8 +8,9 @@ export default function ShopPreview (props) {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity style={styles.contentContainer} onPress={() => navigation.navigate('Отделы', {
-      categoryIds: props.categoryIds
+    <TouchableOpacity style={styles.contentContainer} onPress={() => navigation.navigate('Home', {
+      screen: 'product-categories',
+      params: { categoryIds: props.categoryIds },
     })
   }>
     <View style={styles.imageContainer}>
